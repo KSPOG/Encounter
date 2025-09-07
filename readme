@@ -1,1 +1,16 @@
-dd
+# PokeMMO Encounter Counter
+
+This project provides a simple desktop counter for PokeMMO encounters.
+It features tray notifications and a small Tkinter interface that shows
+current encounter count and the most recent shiny encounter.
+
+## Features
+- Tray tip showing the name of each encountered Pokémon
+- Optional automatic reset when a shiny is found
+- Notifications for shiny and legendary encounters
+
+## Running
+```
+python encounter_counter.py
+```
+A demo button is provided to simulate encounters for manual testing.
