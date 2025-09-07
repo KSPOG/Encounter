@@ -1,1 +1,39 @@
-dd
+# PokeMMO Encounter Counter
+
+This project provides a desktop counter for PokeMMO encounters using Java.
+It watches the PokeMMO client window and uses OCR to identify the Pokémon
+currently encountered.
+
+## Features
+- Tray tip showing the name of each encountered Pokémon
+- Optional automatic reset when a shiny is found
+- Notifications for shiny and legendary encounters
+- Displays the most recent shiny encounter
+
+## Building
+Ensure Java 17+ and Maven are installed, then run:
+
+```
+mvn package
+```
+
+## Running
+```
+java -cp target/encounter-counter-1.0-SNAPSHOT.jar com.pokemmo.encounter.EncounterCounter
+```
+
+Adjust the capture area and configure Tesseract if needed. The OCR engine
+requires access to Tesseract's language data. By default it looks for a
+`tessdata` directory in the working directory. To point it elsewhere or
+specify a language, provide JVM system properties when launching:
+
+```
+java -Dtessdata.path=/path/to/tesseract -Dtess.language=eng \
+  -cp target/encounter-counter-1.0-SNAPSHOT.jar \
+  com.pokemmo.encounter.EncounterCounter
+```
+
+Where `/path/to/tesseract` is the parent directory containing the `tessdata`
+folder (not the folder itself). You may also set the `TESSDATA_PREFIX`
+environment variable to this parent directory. If no language data is found,
+OCR is disabled and encounters will not be detected.
