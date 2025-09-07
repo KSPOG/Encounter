@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.*;
+import java.io.File;
 
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
@@ -94,6 +95,8 @@ public class EncounterCounter {
         private final Robot robot;
         private final Rectangle captureArea = new Rectangle(100, 100, 300, 50); // adjust to game window
         private final ITesseract ocr;
+        private final boolean ocrReady;
+
         PokemonDetector() {
             try {
                 robot = new Robot();
@@ -104,6 +107,12 @@ public class EncounterCounter {
 
             String tessData = System.getProperty("tessdata.path", System.getenv("TESSDATA_PREFIX"));
             if (tessData != null && !tessData.isBlank()) {
+                File path = new File(tessData);
+                if (path.getName().equalsIgnoreCase("tessdata")) {
+                    ocr.setDatapath(path.getParent());
+                } else {
+                    ocr.setDatapath(path.getPath());
+                }
                 ocr.setDatapath(tessData);
             }
 
@@ -111,7 +120,24 @@ public class EncounterCounter {
             if (language != null && !language.isBlank()) {
                 ocr.setLanguage(language);
             }
-
+            boolean hasData = false;
+            try {
+                String dp = ocr.getDatapath();
+                if (dp != null) {
+                    hasData = new File(dp, "tessdata").isDirectory();
+                }
+            } catch (Exception ignored) {
+            }
+            if (!hasData) {
+                System.err.println(
+                    "Tesseract language data not found. Set TESSDATA_PREFIX or -Dtessdata.path to a directory containing tessdata.");
+            }
+            ocrReady = hasData;
+        }
+        Pokemon detectEncounter() {
+            if (!ocrReady) {
+                return null;
+            }
             // Configure tessdata path if needed: ocr.setDatapath("tessdata");
 
         }
