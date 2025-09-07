@@ -111,6 +111,9 @@ public class EncounterCounter {
             if (language != null && !language.isBlank()) {
                 ocr.setLanguage(language);
             }
+
+            // Configure tessdata path if needed: ocr.setDatapath("tessdata");
+
         }
         Pokemon detectEncounter() {
             BufferedImage image = robot.createScreenCapture(captureArea);
