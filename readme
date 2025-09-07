@@ -4,6 +4,7 @@ This project provides a desktop counter for PokeMMO encounters using Java.
 It watches the PokeMMO client window and uses OCR to identify the Pokémon
 currently encountered.
 
+
 This project provides a simple desktop counter for PokeMMO encounters.
 It features tray notifications and a small Tkinter interface that shows
 current encounter count and the most recent shiny encounter.
@@ -27,13 +28,18 @@ mvn package
 java -cp target/encounter-counter-1.0-SNAPSHOT.jar com.pokemmo.encounter.EncounterCounter
 ```
 
+Adjust the capture area and configure Tesseract if needed. The OCR engine
+looks for a tessdata folder relative to the working directory. To override
+this or specify a language, provide JVM system properties when launching:
+
+```
+java -Dtessdata.path=/path/to/tessdata -Dtess.language=eng \
+  -cp target/encounter-counter-1.0-SNAPSHOT.jar \
+  com.pokemmo.encounter.EncounterCounter
+```
+
+Alternatively, set the `TESSDATA_PREFIX` environment variable before running
+the application.
+
 Adjust the capture area and Tesseract data path in `PokemonDetector` to
 match your PokeMMO client.
-
-
-## Running
-```
-python encounter_counter.py
-```
-A demo button is provided to simulate encounters for manual testing.
-

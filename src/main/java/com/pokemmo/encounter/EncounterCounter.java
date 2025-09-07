@@ -101,7 +101,19 @@ public class EncounterCounter {
                 throw new RuntimeException(e);
             }
             ocr = new Tesseract();
+
+            String tessData = System.getProperty("tessdata.path", System.getenv("TESSDATA_PREFIX"));
+            if (tessData != null && !tessData.isBlank()) {
+                ocr.setDatapath(tessData);
+            }
+
+            String language = System.getProperty("tess.language");
+            if (language != null && !language.isBlank()) {
+                ocr.setLanguage(language);
+            }
+
             // Configure tessdata path if needed: ocr.setDatapath("tessdata");
+
         }
         Pokemon detectEncounter() {
             BufferedImage image = robot.createScreenCapture(captureArea);
