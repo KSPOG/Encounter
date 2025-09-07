@@ -96,6 +96,7 @@ public class EncounterCounter {
         private final Rectangle captureArea = new Rectangle(100, 100, 300, 50); // adjust to game window
         private final ITesseract ocr;
         private final boolean ocrReady;
+
         PokemonDetector() {
             try {
                 robot = new Robot();
@@ -112,13 +113,13 @@ public class EncounterCounter {
                 } else {
                     ocr.setDatapath(path.getPath());
                 }
+                ocr.setDatapath(tessData);
             }
 
             String language = System.getProperty("tess.language");
             if (language != null && !language.isBlank()) {
                 ocr.setLanguage(language);
             }
-
             boolean hasData = false;
             try {
                 String dp = ocr.getDatapath();
@@ -137,6 +138,10 @@ public class EncounterCounter {
             if (!ocrReady) {
                 return null;
             }
+            // Configure tessdata path if needed: ocr.setDatapath("tessdata");
+
+        }
+        Pokemon detectEncounter() {
             BufferedImage image = robot.createScreenCapture(captureArea);
             try {
                 String text = ocr.doOCR(image).trim();
